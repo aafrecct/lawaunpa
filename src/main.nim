@@ -13,7 +13,7 @@ for i in countup(1, 64):
 var head = base.head
 type
   loopn = tuple[sike: int, pini: int]
-var loopl= initSinglyLinkedList[loopn]()
+var loopl = initSinglyLinkedList[loopn]()
 var instrp: int = 0
 
 proc sinpin() =
