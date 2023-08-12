@@ -1,4 +1,5 @@
 import std/lists
+import std/sequtils
 import std/strutils
 import std/strformat
 import os
@@ -24,9 +25,11 @@ for i in countup(0, 255):
 
 var head = base.head
 var head_index: uint8 = 0
+
 type
   loopn = tuple[sike: uint, pini: uint]
-var loopl = initSinglyLinkedList[loopn]()
+var loopl = newSeq[loopn]()
+
 var instrp: uint = 0
 
 proc sinpin() =
@@ -60,21 +63,20 @@ proc toki() =
 
 proc sike() =
   if head.value != 0:
-    if loopl.head == nil or loopl.head.value.sike != instrp:
+    if len(loopl) == 0 or loopl[^1].sike != instrp:
       var tup: loopn = (sike: instrp, pini: instrp)
-      let tupn = newSinglyLinkedNode[loopn](tup)
-      loopl.add(tupn)
+      loopl.add(tup)
   else:
-    instrp = loopl.head.value.pini
-    loopl.remove(loopl.head)
+    instrp = loopl[^1].pini
+    loopl.delete(high(loopl))
 
 proc pini(): range[-1..255] =
-  if loopl.head == nil:
+  if len(loopl) == 0:
     return head.value
   else:
-    if loopl.head.value.pini == loopl.head.value.sike:
-      loopl.head.value.pini = instrp
-    instrp = loopl.head.value.sike - 1
+    if loopl[^1].pini == loopl[^1].sike:
+      loopl[^1].pini = instrp
+    instrp = loopl[^1].sike - 1
     return -1
 
 
@@ -118,6 +120,8 @@ while instrp < program_length:
 
   instrp += 1
   steps += 1
+  if steps > 400:
+    system.quit()
 
 echo ""
 system.quit(int(head.value))
